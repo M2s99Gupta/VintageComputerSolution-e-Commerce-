@@ -1,5 +1,5 @@
 {
-<<<<<<< HEAD
+
   "name": "e-commerce",
   "version": "0.1.0",
   "private": true,
@@ -24,7 +24,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-=======
+
   "name": "online-shopping",
   "version": "0.1.0",
   "private": true,
@@ -32,10 +32,15 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
->>>>>>> aa03f4f (Initialize project using Create React App)
+
+    "react-toastify": "^9.0.8",
+
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -61,7 +66,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-<<<<<<< HEAD
+
   },
   "devDependencies": {
     "tailwindcss": "^3.3.2"
@@ -71,7 +76,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
-=======
+
   }
->>>>>>> aa03f4f (Initialize project using Create React App)
+
 }
