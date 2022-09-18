@@ -21,7 +21,6 @@ const AddProductForm = () => {
   }, []);
 
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [product, setProduct] = useState({
     title: "",
     description: "",
@@ -58,15 +57,18 @@ const AddProductForm = () => {
   return (
     <div>
       <div class="mt-2 d-flex aligns-items-center justify-content-center">
-        <div class="card form-card border-color" style={{ width: "25rem" }}>
-          <div className="card-header bg-color">
+        <div
+          class="card form-card border-color custom-bg"
+          style={{ width: "25rem" }}
+        >
+          <div className="card-header bg-color custom-bg-text text-center">
             <h5 class="card-title">Add Product</h5>
           </div>
-          <div class="card-body">
+          <div class="card-body text-color">
             <form>
               <div class="mb-3">
                 <label for="title" class="form-label">
-                  Product Title
+                  <b>Product Title</b>
                 </label>
                 <input
                   type="text"
@@ -79,7 +81,7 @@ const AddProductForm = () => {
               </div>
               <div class="mb-3">
                 <label for="description" class="form-label">
-                  Product Description
+                  <b>Product Description</b>
                 </label>
                 <textarea
                   class="form-control"
@@ -92,11 +94,12 @@ const AddProductForm = () => {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Category</label>
+                <label className="form-label">
+                  <b>Category</b>
+                </label>
 
                 <select
                   name="categoryId"
-                  value={selectedCategory}
                   onChange={handleInput}
                   className="form-control"
                 >
@@ -112,7 +115,7 @@ const AddProductForm = () => {
 
               <div class="mb-3 mt-1">
                 <label for="quantity" class="form-label">
-                  Product Quantity
+                  <b>Product Quantity</b>
                 </label>
                 <input
                   type="number"
@@ -126,7 +129,7 @@ const AddProductForm = () => {
 
               <div class="mb-3">
                 <label for="price" class="form-label">
-                  Product Price
+                  <b>Product Price</b>
                 </label>
                 <input
                   type="number"
@@ -140,7 +143,7 @@ const AddProductForm = () => {
 
               <div class="mb-3">
                 <label for="formFile" class="form-label">
-                  Select Product Image
+                  <b> Select Product Image</b>
                 </label>
                 <input
                   class="form-control"
@@ -154,7 +157,7 @@ const AddProductForm = () => {
 
               <button
                 type="submit"
-                class="btn custom-bg text-color"
+                class="btn bg-color custom-bg-text"
                 onClick={saveProduct}
               >
                 Add Product

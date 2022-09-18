@@ -22,14 +22,14 @@ const DeliveryPersonHeader = () => {
   };
 
   return (
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5 text-color">
       <li class="nav-item">
         <Link
           to="/user/delivery/myorders"
           class="nav-link active"
           aria-current="page"
         >
-          My Deliveries
+          <b className="text-color">My Deliveries</b>
         </Link>
       </li>
 
@@ -39,7 +39,7 @@ const DeliveryPersonHeader = () => {
           class="nav-link active"
           aria-current="page"
         >
-          Update Order Delivery
+          <b className="text-color">Update Order Delivery</b>
         </Link>
       </li>
 
@@ -50,7 +50,7 @@ const DeliveryPersonHeader = () => {
           aria-current="page"
           onClick={userLogout}
         >
-          Logout
+          <b className="text-color">Logout</b>
         </Link>
         <ToastContainer />
       </li>

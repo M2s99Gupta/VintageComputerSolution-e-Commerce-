@@ -30,12 +30,12 @@ const MyOrder = () => {
   return (
     <div className="mt-3">
       <div
-        className="card form-card ms-2 me-2 mb-5"
+        className="card form-card ms-2 me-2 mb-5 custom-bg"
         style={{
           height: "45rem",
         }}
       >
-        <div className="card-header text-center bg-color">
+        <div className="card-header text-center bg-color custom-bg-text">
           <h2>My Orders</h2>
         </div>
         <div
@@ -61,11 +61,13 @@ const MyOrder = () => {
                   <th scope="col">Delivery Mobile No</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-color">
                 {myOrderData.map((orderData) => {
                   return (
                     <tr>
-                      <td>{orderData.orderId}</td>
+                      <td>
+                        <b>{orderData.orderId}</b>
+                      </td>
                       <td>
                         <img
                           src={
@@ -79,15 +81,33 @@ const MyOrder = () => {
                           }}
                         />
                       </td>
-                      <td>{orderData.productName}</td>
-                      <td>{orderData.productDescription}</td>
-                      <td>{orderData.quantity}</td>
-                      <td>{orderData.totalPrice}</td>
-                      <td>{orderData.orderDate}</td>
-                      <td>{orderData.deliveryDate}</td>
-                      <td>{orderData.deliveryStatus}</td>
-                      <td>{orderData.deliveryPersonName}</td>
-                      <td>{orderData.deliveryPersonContact}</td>
+                      <td>
+                        <b>{orderData.productName}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.productDescription}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.quantity}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.totalPrice}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.orderDate}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryDate}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryStatus}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryPersonName}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryPersonContact}</b>
+                      </td>
                     </tr>
                   );
                 })}

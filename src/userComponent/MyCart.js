@@ -48,12 +48,12 @@ const MyCart = () => {
   return (
     <div className="mt-3">
       <div
-        className="card form-card ms-2 me-2 mb-5"
+        className="card form-card ms-2 me-2 mb-5 custom-bg border-color"
         style={{
           height: "45rem",
         }}
       >
-        <div className="card-header text-center bg-color">
+        <div className="card-header text-center bg-color custom-bg-text">
           <h2>My Cart</h2>
         </div>
         <div
@@ -73,7 +73,7 @@ const MyCart = () => {
                   <th scope="col">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-color">
                 {myCartData.map((cartData) => {
                   return (
                     <tr>
@@ -90,12 +90,18 @@ const MyCart = () => {
                           }}
                         />
                       </td>
-                      <td>{cartData.productName}</td>
-                      <td>{cartData.productDescription}</td>
-                      <td>{cartData.quantity}</td>
+                      <td>
+                        <b>{cartData.productName}</b>
+                      </td>
+                      <td>
+                        <b>{cartData.productDescription}</b>
+                      </td>
+                      <td>
+                        <b>{cartData.quantity}</b>
+                      </td>
                       <td>
                         <button
-                          className="btn btn-danger btn-sm"
+                          className="btn bg-color custom-bg-text btn-sm"
                           onClick={() => deleteProductFromCart(cartData.cartId)}
                         >
                           Delete
@@ -108,21 +114,21 @@ const MyCart = () => {
             </table>
           </div>
         </div>
-        <div className="card-footer bg-color">
+        <div className="card-footer custom-bg">
           <div className="float-right">
             <div
-              className="custom-bg-text me-2"
+              className="text-color me-2"
               style={{
                 textAlign: "right",
               }}
             >
-              <h6>Total Price: &#8377; {totatPrice}/-</h6>
+              <h5>Total Price: &#8377; {totatPrice}/-</h5>
             </div>
 
             <div className="float-end me-2">
               <button
                 type="submit"
-                className="btn custom-bg text-color mb-3"
+                className="btn bg-color custom-bg-text mb-3"
                 onClick={checkout}
               >
                 Checkout

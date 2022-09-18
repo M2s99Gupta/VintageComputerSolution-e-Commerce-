@@ -1,7 +1,6 @@
 import Carousel from "./Carousel";
 import GetAllCategories from "../productComponent/GetAllCategories";
 import ProductCard from "../productComponent/ProductCard";
-import Pagination from "./Pagination";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -60,16 +59,12 @@ const HomePage = () => {
           <div className="col-sm-10">
             <div className="row">
               <div class="col-md-12">
-                <div className="card-group">
+                <div className="col-md-3">
                   {products.map((product) => {
                     return <ProductCard item={product} />;
                   })}
                 </div>
               </div>
-            </div>
-
-            <div className="mt-2 d-flex justify-content-between">
-              <Pagination />
             </div>
           </div>
         </div>

@@ -47,15 +47,18 @@ const AddUserForm = () => {
   return (
     <div>
       <div class="mt-2 d-flex aligns-items-center justify-content-center ms-2 me-2 mb-2">
-        <div class="card form-card border-color" style={{ width: "25rem" }}>
-          <div className="card-header bg-color">
+        <div
+          class="card form-card border-color text-color custom-bg"
+          style={{ width: "25rem" }}
+        >
+          <div className="card-header bg-color custom-bg-text text-center">
             <h5 class="card-title">Add User</h5>
           </div>
           <div class="card-body">
             <form>
-              <div class="mb-3">
+              <div class="mb-3 text-color">
                 <label for="role" class="form-label">
-                  User Role
+                  <b>User Role</b>
                 </label>
                 <select
                   onChange={handleUserInput}
@@ -69,9 +72,9 @@ const AddUserForm = () => {
                 </select>
               </div>
 
-              <div class="mb-3">
+              <div class="mb-3 text-color">
                 <label for="title" class="form-label">
-                  First Name
+                  <b> First Name</b>
                 </label>
                 <input
                   type="text"
@@ -82,9 +85,9 @@ const AddUserForm = () => {
                   value={user.firstName}
                 />
               </div>
-              <div class="mb-3">
+              <div class="mb-3 text-color">
                 <label for="description" class="form-label">
-                  Last Name
+                  <b>Last Name</b>
                 </label>
                 <input
                   type="text"
@@ -96,8 +99,10 @@ const AddUserForm = () => {
                 />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Email Id</label>
+              <div className="mb-3 text-color">
+                <b>
+                  <label className="form-label">Email Id</label>
+                </b>
                 <input
                   type="email"
                   class="form-control"
@@ -124,7 +129,7 @@ const AddUserForm = () => {
 
               <div class="mb-3">
                 <label for="price" class="form-label">
-                  Mobile No
+                  <b>Mobile No</b>
                 </label>
                 <input
                   type="number"
@@ -138,7 +143,7 @@ const AddUserForm = () => {
 
               <div class="mb-3">
                 <label for="description" class="form-label">
-                  Street
+                  <b> Street</b>
                 </label>
                 <textarea
                   class="form-control"
@@ -152,7 +157,7 @@ const AddUserForm = () => {
 
               <div class="mb-3">
                 <label for="price" class="form-label">
-                  City
+                  <b>City</b>
                 </label>
                 <input
                   type="text"
@@ -166,7 +171,7 @@ const AddUserForm = () => {
 
               <div class="mb-3">
                 <label for="pincode" class="form-label">
-                  Pincode
+                  <b>Pincode</b>
                 </label>
                 <input
                   type="number"
@@ -180,7 +185,7 @@ const AddUserForm = () => {
 
               <button
                 type="submit"
-                class="btn custom-bg text-color"
+                class="btn bg-color custom-bg-text"
                 onClick={saveUser}
               >
                 Register User

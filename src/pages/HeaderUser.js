@@ -22,13 +22,13 @@ const HeaderUser = () => {
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
       <li class="nav-item">
         <Link to="/user/mycart" class="nav-link active" aria-current="page">
-          My Cart
+          <b className="text-color">My Cart</b>
         </Link>
       </li>
 
       <li class="nav-item">
         <Link to="/user/myorder" class="nav-link active" aria-current="page">
-          My Order
+          <b className="text-color">My Order</b>
         </Link>
       </li>
 
@@ -39,7 +39,7 @@ const HeaderUser = () => {
           aria-current="page"
           onClick={userLogout}
         >
-          Logout
+          <b className="text-color">Logout</b>
         </Link>
         <ToastContainer />
       </li>

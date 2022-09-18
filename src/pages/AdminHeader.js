@@ -25,13 +25,13 @@ const AdminHeader = () => {
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
       <li class="nav-item">
         <Link to="/addcategory" class="nav-link active" aria-current="page">
-          Add Category
+          <b className="text-color"> Add Category</b>
         </Link>
       </li>
 
       <li class="nav-item">
         <Link to="/addproduct" class="nav-link active" aria-current="page">
-          Add Product
+          <b className="text-color">Add Product</b>
         </Link>
       </li>
 
@@ -41,7 +41,7 @@ const AdminHeader = () => {
           class="nav-link active"
           aria-current="page"
         >
-          All Orders
+          <b className="text-color">All Orders</b>
         </Link>
       </li>
 
@@ -51,7 +51,7 @@ const AdminHeader = () => {
           class="nav-link active"
           aria-current="page"
         >
-          Assign Order Delivery
+          <b className="text-color">Assign Order Delivery</b>
         </Link>
       </li>
 
@@ -62,7 +62,7 @@ const AdminHeader = () => {
           aria-current="page"
           onClick={adminLogout}
         >
-          Logout
+          <b className="text-color">Logout</b>
         </Link>
         <ToastContainer />
       </li>

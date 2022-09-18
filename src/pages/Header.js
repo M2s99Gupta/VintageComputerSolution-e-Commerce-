@@ -1,13 +1,23 @@
 import { Link } from "react-router-dom";
 import RoleNav from "./RoleNav";
+import logo from "../images/e_logo.png";
 
 const Header = () => {
   return (
     <div>
-      <nav class="navbar  navbar-dark navbar-expand-lg custom-bg">
-        <div class="container-fluid">
+      <nav class="navbar  navbar-expand-lg custom-bg text-color">
+        <div class="container-fluid text-color">
+          <img
+            src={logo}
+            width="35"
+            height="35"
+            class="d-inline-block align-top"
+            alt=""
+          />
           <Link to="/" class="navbar-brand">
-            Online Shopping
+            <i>
+              <b className="text-color">Online Shopping</b>
+            </i>
           </Link>
 
           <button
@@ -25,13 +35,13 @@ const Header = () => {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <Link to="/about" class="nav-link active" aria-current="page">
-                  About Us
+                  <b className="text-color">About Us</b>
                 </Link>
               </li>
 
               <li class="nav-item">
                 <Link to="/contact" class="nav-link active" aria-current="page">
-                  Contact Us
+                  <b className="text-color">Contact Us</b>
                 </Link>
               </li>
             </ul>

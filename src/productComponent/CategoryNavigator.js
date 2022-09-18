@@ -8,9 +8,12 @@ const CategoryNavigator = (category) => {
       style={{
         textDecoration: "none",
       }}
-      className="custom-bg-text"
+      className="text-color"
     >
-      <i>{category.item.title}</i>
+      <b>
+        {" "}
+        <i>{category.item.title}</i>
+      </b>
     </Link>
   );
 };

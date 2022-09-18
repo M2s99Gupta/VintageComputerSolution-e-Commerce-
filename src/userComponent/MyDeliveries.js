@@ -31,13 +31,13 @@ const MyDeliveries = () => {
   return (
     <div className="mt-3">
       <div
-        className="card form-card ms-2 me-2 mb-5"
+        className="card form-card ms-2 me-2 mb-5 custom-bg border-color"
         style={{
           height: "45rem",
         }}
       >
-        <div className="card-header text-center bg-color">
-          <h2>My Orders</h2>
+        <div className="card-header text-center bg-color custom-bg-text">
+          <h2>My Deliveries</h2>
         </div>
         <div
           className="card-body"
@@ -67,11 +67,13 @@ const MyDeliveries = () => {
                   <th scope="col">Delivery Mobile No</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-color">
                 {myOrderData.map((orderData) => {
                   return (
                     <tr>
-                      <td>{orderData.orderId}</td>
+                      <td>
+                        <b>{orderData.orderId}</b>
+                      </td>
                       <td>
                         <img
                           src={
@@ -85,20 +87,49 @@ const MyDeliveries = () => {
                           }}
                         />
                       </td>
-                      <td>{orderData.productName}</td>
-                      <td>{orderData.productDescription}</td>
-                      <td>{orderData.quantity}</td>
-                      <td>{orderData.totalPrice}</td>
-                      <td>{orderData.userName}</td>
-                      <td>{orderData.address.street}</td>
-                      <td>{orderData.address.city}</td>
-                      <td>{orderData.address.pincode}</td>
-                      <td>{orderData.userPhone}</td>
-                      <td>{orderData.orderDate}</td>
-                      <td>{orderData.deliveryDate}</td>
-                      <td>{orderData.deliveryStatus}</td>
-                      <td>{orderData.deliveryPersonName}</td>
-                      <td>{orderData.deliveryPersonContact}</td>
+                      <td>
+                        <b>{orderData.productName}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.productDescription}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.quantity}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.totalPrice}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.userName}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.address.street}</b>
+                      </td>
+
+                      <td>
+                        <b>{orderData.address.city}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.address.pincode}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.userPhone}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.orderDate}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryDate}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryStatus}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryPersonName}</b>
+                      </td>
+                      <td>
+                        <b>{orderData.deliveryPersonContact}</b>
+                      </td>
                     </tr>
                   );
                 })}

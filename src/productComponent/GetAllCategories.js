@@ -22,10 +22,10 @@ const GetAllCategories = () => {
   }, []);
 
   return (
-    <div class="list-group form-card">
+    <div class="list-group form-card border-color">
       <Link
         to="/home/all/product/categories"
-        class="list-group-item list-group-item-action custom-bg text-color"
+        class="list-group-item list-group-item-action bg-color custom-bg-text"
       >
         <b>All Categories</b>
       </Link>
@@ -34,7 +34,7 @@ const GetAllCategories = () => {
         return (
           <Link
             to={`/home/product/category/${category.id}/${category.title}`}
-            class="list-group-item list-group-item-action custom-bg-text"
+            class="list-group-item list-group-item-action text-color custom-bg"
           >
             <b>{category.title}</b>
           </Link>

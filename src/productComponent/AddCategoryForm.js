@@ -25,15 +25,18 @@ const AddCategoryForm = () => {
   return (
     <div>
       <div class="mt-2 d-flex aligns-items-center justify-content-center">
-        <div class="card form-card border-color" style={{ width: "25rem" }}>
-          <div className="card-header bg-color">
+        <div
+          class="card form-card border-color custom-bg"
+          style={{ width: "25rem" }}
+        >
+          <div className="card-header bg-color text-center custom-bg-text">
             <h5 class="card-title">Add Category</h5>
           </div>
-          <div class="card-body">
+          <div class="card-body text-color">
             <form>
               <div class="mb-3">
                 <label for="title" class="form-label">
-                  Category Title
+                  <b>Category Title</b>
                 </label>
                 <input
                   type="text"
@@ -48,7 +51,7 @@ const AddCategoryForm = () => {
               </div>
               <div class="mb-3">
                 <label for="description" class="form-label">
-                  Category Description
+                  <b>Category Description</b>
                 </label>
                 <textarea
                   class="form-control"
@@ -65,7 +68,7 @@ const AddCategoryForm = () => {
               <button
                 type="submit"
                 onClick={saveCategory}
-                class="btn custom-bg text-color"
+                class="btn bg-color custom-bg-text"
               >
                 Add Category
               </button>

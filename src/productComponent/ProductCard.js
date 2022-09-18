@@ -4,7 +4,7 @@ import CategoryNavigator from "./CategoryNavigator";
 
 const ProductCard = (product) => {
   return (
-    <div class="card border-color rounded-card card-hover product-card">
+    <div class="card border-color rounded-card card-hover product-card custom-bg">
       <img
         src={"http://localhost:8080/api/product/" + product.item.imageName}
         class="card-img-top rounded mx-auto d-block m-2"
@@ -16,17 +16,11 @@ const ProductCard = (product) => {
         }}
       />
 
-      <div class="card-body">
+      <div class="card-body text-color">
         <h5 class="card-title d-flex justify-content-between">
-          <Link
-            to="/"
-            style={{
-              textDecoration: "none",
-            }}
-            className="custom-bg-text"
-          >
-            {product.item.title}
-          </Link>
+          <div>
+            <b>{product.item.title}</b>
+          </div>
           <CategoryNavigator
             item={{
               id: product.item.category.id,
@@ -34,31 +28,27 @@ const ProductCard = (product) => {
             }}
           />
         </h5>
-        <p className="card-text custom-bg-text">{product.item.description}</p>
+        <p className="card-text">
+          <b>{product.item.description}</b>
+        </p>
       </div>
-      <div class="card-footer bg-color">
-        <div className="text-center">
+      <div class="card-footer">
+        <div className="text-center text-color">
           <p>
             <span>
-              <b
-                style={{
-                  color: "green",
-                }}
-              >
-                Price : &#8377;{product.item.price}
-              </b>
+              <h4>Price : &#8377;{product.item.price}</h4>
             </span>
           </p>
         </div>
         <div className="d-flex justify-content-between">
           <Link
             to={`/product/${product.item.id}/category/${product.item.category.id}`}
-            className="btn custom-bg text-color"
+            className="btn bg-color custom-bg-text"
           >
             Add to Cart
           </Link>
 
-          <p class="custom-bg-text">
+          <p class="text-color">
             <b>
               <i>Stock :</i> {product.item.quantity}
             </b>

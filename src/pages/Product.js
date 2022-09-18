@@ -32,21 +32,6 @@ const Product = () => {
     return response.data;
   };
 
-  const retrieveToShowReviewButton = async () => {
-    console.log("TRYING To call show REVIEW API!!!");
-
-    const response = await axios.post(
-      "http://localhost:8080/api/user/order/product/showreview?productId=" +
-        productId +
-        "&userId=" +
-        user.id
-    );
-
-    console.log(response.data.isToShow);
-
-    return response.data;
-  };
-
   useEffect(() => {
     const getProduct = async () => {
       const retrievedProduct = await retrieveProduct();
@@ -111,7 +96,7 @@ const Product = () => {
           <GetAllCategories />
         </div>
         <div class="col-sm-3 mt-2 admin">
-          <div class="card form-card border-color">
+          <div class="card form-card border-color custom-bg">
             <img
               src={"http://localhost:8080/api/product/" + product.imageName}
               style={{
@@ -125,45 +110,25 @@ const Product = () => {
           </div>
         </div>
         <div class="col-sm-7 mt-2">
-          <div class="card form-card border-color">
+          <div class="card form-card border-color custom-bg">
             <div class="card-header bg-color">
               <div className="d-flex justify-content-between">
                 <h1 className="custom-bg-text">{product.title}</h1>
-                <CategoryNavigator
-                  item={{
-                    id: product.category.id,
-                    title: product.category.title,
-                  }}
-                />
               </div>
             </div>
 
-            <div class="card-body text-left">
+            <div class="card-body text-left text-color">
               <div class="text-left mt-3">
-                <h3 className="custom-bg-text">Description :</h3>
+                <h3>Description :</h3>
               </div>
-              <h4 class="card-text custom-bg-text">{product.description}</h4>
+              <h4 class="card-text">{product.description}</h4>
             </div>
 
-            <div class="card-footer bg-color">
-              <div className="text-center">
+            <div class="card-footer custom-bg">
+              <div className="text-center text-color">
                 <p>
                   <span>
-                    <b
-                      style={{
-                        color: "green",
-                      }}
-                    >
-                      Price : &#8377;{product.price}
-                    </b>
-                  </span>
-
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    <s>&#8377;1199.00</s>/-
+                    <h4>Price : &#8377;{product.price}</h4>
                   </span>
                 </p>
               </div>
@@ -184,7 +149,7 @@ const Product = () => {
                     <div class="col-auto">
                       <button
                         type="submit"
-                        className="btn custom-bg text-color mb-3"
+                        className="btn bg-color custom-bg-text mb-3"
                         onClick={addToCart}
                       >
                         Add to Cart
@@ -193,7 +158,9 @@ const Product = () => {
                   </form>
                 </div>
 
-                <p class="ml-2">Stock : {product.quantity}</p>
+                <p class="ml-2 text-color">
+                  <b>Stock : {product.quantity}</b>
+                </p>
               </div>
             </div>
           </div>

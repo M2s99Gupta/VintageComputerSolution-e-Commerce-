@@ -55,15 +55,18 @@ const UserLoginForm = () => {
   return (
     <div>
       <div className="mt-2 d-flex aligns-items-center justify-content-center">
-        <div className="card form-card border-color" style={{ width: "25rem" }}>
-          <div className="card-header bg-color text-center">
+        <div
+          className="card form-card border-color custom-bg"
+          style={{ width: "25rem" }}
+        >
+          <div className="card-header bg-color text-center custom-bg-text">
             <h4 className="card-title">User Login</h4>
           </div>
           <div className="card-body">
             <form>
-              <div class="mb-3">
+              <div class="mb-3 text-color">
                 <label for="role" class="form-label">
-                  User Role
+                  <b>User Role</b>
                 </label>
                 <select
                   onChange={handleUserInput}
@@ -77,9 +80,9 @@ const UserLoginForm = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label for="emailId" class="form-label custom-bg-text">
-                  Email Id
+              <div className="mb-3 text-color">
+                <label for="emailId" class="form-label">
+                  <b>Email Id</b>
                 </label>
                 <input
                   type="email"
@@ -90,9 +93,9 @@ const UserLoginForm = () => {
                   value={loginRequest.emailId}
                 />
               </div>
-              <div className="mb-3">
-                <label for="password" className="form-label custom-bg-text">
-                  Password
+              <div className="mb-3 text-color">
+                <label for="password" className="form-label">
+                  <b>Password</b>
                 </label>
                 <input
                   type="password"
@@ -106,7 +109,7 @@ const UserLoginForm = () => {
               </div>
               <button
                 type="submit"
-                className="btn custom-bg text-color"
+                className="btn bg-color custom-bg-text"
                 onClick={loginAction}
               >
                 Login
