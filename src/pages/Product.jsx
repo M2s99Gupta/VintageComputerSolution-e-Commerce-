@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ProductCard from "../productComponent/ProductCard";
+import { ToastContainer, toast } from "react-toastify";
 
 const Product = () => {
   const { productId, categoryId } = useParams();
@@ -72,6 +73,17 @@ const Product = () => {
       }),
     }).then((result) => {
       console.log("result", result);
+
+      toast.success("Products added to Cart Successfully!!!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       result.json().then((res) => {
         console.log("response", res);
       });
@@ -134,7 +146,7 @@ const Product = () => {
               </div>
               <div className="d-flex justify-content-between">
                 <div>
-                  <form class="row g-3">
+                  <form class="row g-3" onSubmit={addToCart}>
                     <div class="col-auto">
                       <input
                         type="number"
@@ -147,13 +159,12 @@ const Product = () => {
                       />
                     </div>
                     <div class="col-auto">
-                      <button
+                      <input
                         type="submit"
                         className="btn bg-color custom-bg-text mb-3"
-                        onClick={addToCart}
-                      >
-                        Add to Cart
-                      </button>
+                        value="Add to Cart"
+                      />
+                      <ToastContainer />
                     </div>
                   </form>
                 </div>
@@ -172,13 +183,12 @@ const Product = () => {
 
         <div className="col-sm-10">
           <h2>Related Products:</h2>
-          <div class="row">
-            <div class="card-group">
-              {products.map((product) => {
-                return <ProductCard item={product} />;
-              })}
-            </div>
-          </div>
+          <div className="row row-cols-1 row-cols-md-4 g-4">
+              
+                {products.map((product) => {
+                  return <ProductCard item={product} />;
+                })}
+              </div>
         </div>
       </div>
     </div>

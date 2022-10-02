@@ -4,7 +4,8 @@ import CategoryNavigator from "./CategoryNavigator";
 
 const ProductCard = (product) => {
   return (
-    <div class="card border-color rounded-card card-hover product-card custom-bg">
+    <div className="col">
+    <div class="card border-color rounded-card card-hover product-card custom-bg h-100">
       <img
         src={"http://localhost:8080/api/product/" + product.item.imageName}
         class="card-img-top rounded mx-auto d-block m-2"
@@ -55,6 +56,7 @@ const ProductCard = (product) => {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 };

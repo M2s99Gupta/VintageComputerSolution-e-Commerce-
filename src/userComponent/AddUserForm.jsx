@@ -19,7 +19,8 @@ const AddUserForm = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const saveUser = () => {
+  const saveUser = (event) => {
+    event.preventDefault();
     fetch("http://localhost:8080/api/user/register", {
       method: "POST",
       headers: {
@@ -28,7 +29,8 @@ const AddUserForm = () => {
       },
       body: JSON.stringify(user),
     }).then((result) => {
-      toast.success("logged out!!!", {
+      console.log("******near toast thing");
+      toast.success("Registered Successfully!!!", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -38,9 +40,15 @@ const AddUserForm = () => {
         progress: undefined,
       });
       console.warn("result", result);
-      result.json().then((res) => {
-        console.log("response", res);
-      });
+      result
+        .json()
+        .then((res) => {
+          console.log("response", res);
+        })
+        .catch((error) => {
+          console.log("******", error);
+          console.log(error);
+        });
     });
   };
 
@@ -55,7 +63,7 @@ const AddUserForm = () => {
             <h5 class="card-title">Add User</h5>
           </div>
           <div class="card-body">
-            <form>
+            <form onSubmit={saveUser}>
               <div class="mb-3 text-color">
                 <label for="role" class="form-label">
                   <b>User Role</b>
@@ -183,13 +191,12 @@ const AddUserForm = () => {
                 />
               </div>
 
-              <button
+              <input
                 type="submit"
                 class="btn bg-color custom-bg-text"
-                onClick={saveUser}
-              >
-                Register User
-              </button>
+                value="Register User"
+              />
+
               <ToastContainer />
             </form>
           </div>

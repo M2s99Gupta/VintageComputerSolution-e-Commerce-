@@ -49,23 +49,21 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mb-2">
       <Carousel />
       <div className="mt-2">
         <div className="row">
-          <div className="col-sm-2">
+          <div className="col-md-2">
             <GetAllCategories />
           </div>
-          <div className="col-sm-10">
-            <div className="row">
-              <div class="col-md-12">
-                <div className="col-md-3">
-                  {products.map((product) => {
-                    return <ProductCard item={product} />;
-                  })}
-                </div>
+          <div className="col-md-10">
+            <div className="row row-cols-1 row-cols-md-4 g-4">
+              
+                {products.map((product) => {
+                  return <ProductCard item={product} />;
+                })}
               </div>
-            </div>
+            
           </div>
         </div>
       </div>

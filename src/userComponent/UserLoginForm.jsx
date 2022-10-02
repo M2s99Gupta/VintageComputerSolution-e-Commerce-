@@ -47,6 +47,8 @@ const UserLoginForm = () => {
           draggable: true,
           progress: undefined,
         });
+
+        navigate("/home");
       });
     });
     e.preventDefault();

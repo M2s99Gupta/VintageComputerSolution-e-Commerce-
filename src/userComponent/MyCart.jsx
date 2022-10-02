@@ -40,7 +40,8 @@ const MyCart = () => {
     console.log(response);
   };
 
-  const checkout = () => {
+  const checkout = (e) => {
+    e.preventDefault();
     console.log("CHECKOUT PAGE REQUEST");
     navigate("/user/order/payment", { state: { priceToPay: totatPrice } });
   };

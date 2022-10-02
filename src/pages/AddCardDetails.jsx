@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddCardDetails = () => {
   const location = useLocation();
@@ -30,12 +31,23 @@ const AddCardDetails = () => {
       console.log("result", result);
       result.json().then((res) => {
         console.log(res);
+
+        
       });
     });
   };
 
-  const payForOrder = (e) => {
+  const payForOrder = () => {
     payAndOrder();
+    toast.success("Products Ordered Sucessfully!!!", {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     navigate("/home");
   };
 
@@ -43,14 +55,14 @@ const AddCardDetails = () => {
     <div>
       <div class="mt-2 d-flex aligns-items-center justify-content-center">
         <div class="card form-card border-color" style={{ width: "25rem" }}>
-          <div className="card-header bg-color">
-            <h5 class="card-title">Payment Details</h5>
+          <div className="card-header bg-color custom-bg-text">
+            <h5 class="card-title text-center">Payment Details</h5>
           </div>
-          <div class="card-body">
-            <form>
+          <div class="card-body text-color custom-bg">
+            <form onSubmit={payForOrder}>
               <div class="mb-3">
                 <label for="name" class="form-label">
-                  Name on Card
+                  <b> Name on Card</b>
                 </label>
                 <input
                   type="text"
@@ -64,7 +76,7 @@ const AddCardDetails = () => {
               </div>
               <div class="mb-3">
                 <label for="cardNumber" class="form-label">
-                  Card Number
+                  <b> Card Number</b>
                 </label>
                 <input
                   type="text"
@@ -79,7 +91,7 @@ const AddCardDetails = () => {
 
               <div class="mb-3">
                 <label for="validThrough" class="form-label">
-                  Valid Through
+                  <b>Valid Through</b>
                 </label>
                 <input
                   type="text"
@@ -94,7 +106,7 @@ const AddCardDetails = () => {
 
               <div class="mb-3">
                 <label for="cvv" class="form-label">
-                  CVV
+                  <b>CVV</b>
                 </label>
                 <input
                   type="text"
@@ -107,13 +119,13 @@ const AddCardDetails = () => {
                 />
               </div>
 
-              <button
+              <input
                 type="submit"
-                class="btn custom-bg text-color"
-                onClick={payForOrder}
-              >
-                Pay &#8377; {priceToPay}/-
-              </button>
+                class="btn custom-bg-text bg-color"
+                value={"Pay Rs" + priceToPay}
+              />
+
+              <ToastContainer />
             </form>
           </div>
         </div>
