@@ -1,4 +1,4 @@
-import jeans_images from "../images/fitjeans.jpg";
+
 import { Link } from "react-router-dom";
 import CategoryNavigator from "./CategoryNavigator";
 

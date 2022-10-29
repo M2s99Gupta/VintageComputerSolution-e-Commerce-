@@ -19,6 +19,7 @@ const DeliveryPersonHeader = () => {
       progress: undefined,
     });
     sessionStorage.removeItem("active-delivery");
+    window.location.reload(true);
   };
 
   return (

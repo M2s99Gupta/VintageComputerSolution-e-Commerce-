@@ -49,6 +49,7 @@ const UserLoginForm = () => {
         });
 
         navigate("/home");
+        window.location.reload(true);
       });
     });
     e.preventDefault();

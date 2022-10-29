@@ -1,4 +1,3 @@
-import contactus_image from "../images/contactus.jpeg";
 
 const ContactUs = () => {
   return (
