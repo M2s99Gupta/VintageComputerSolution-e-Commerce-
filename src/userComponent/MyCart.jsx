@@ -88,10 +88,246 @@ const MyCart = () => {
       });
   };
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup: remove the script from the DOM when the component is unmounted
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const checkout = (e) => {
+    fetch("http://localhost:8080/api/user/order/create?userId=" + user.id, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((result) => {
+        result.json().then((res) => {
+          if (res.success) {
+            console.log("Success Response");
+            var options = res.razorPayRequest;
+            console.log(options);
+
+            // Add the handler function to the responseData object
+            options.handler = function (response) {
+              console.log(response.razorpay_payment_id);
+              console.log(response.razorpay_order_id);
+              console.log(response.razorpay_signature);
+              response.razorpay_order_id = options.orderId;
+
+              fetch("http://localhost:8080/api/user/razorpPay/response", {
+                method: "PUT",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(response),
+              })
+                .then((result) => {
+                  result.json().then((res) => {
+                    if (res.success) {
+                      toast.success(res.responseMessage, {
+                        position: "top-center",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+
+                      setTimeout(() => {
+                        navigate("/user/myorder");
+                      }, 1000);
+                    } else if (!res.success) {
+                      toast.error(res.responseMessage, {
+                        position: "top-center",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+
+                      setTimeout(() => {
+                        window.location.reload(true);
+                      }, 1000); // Redirect after 3 seconds
+                    } else {
+                      toast.error("It seems server is down", {
+                        position: "top-center",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+
+                      setTimeout(() => {
+                        window.location.reload(true);
+                      }, 1000); // Redirect after 3 seconds
+                    }
+                  });
+                })
+                .catch((error) => {
+                  console.error(error);
+                  toast.error("It seems server is down", {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+                  setTimeout(() => {
+                    window.location.reload(true);
+                  }, 1000); // Redirect after 3 seconds
+                });
+            };
+            console.log("final json after adding handler function");
+            console.log(options);
+
+            // Check if Razorpay is available in the window object
+            if (window.Razorpay) {
+              console.log("Rzaorpay is defined");
+              const rzp1 = new window.Razorpay(options);
+              rzp1.on("payment.failed", function (response) {
+                console.log(response.error.code);
+                console.log(response.error.description);
+                console.log(response.error.source);
+                console.log(response.error.step);
+                console.log(response.error.reason);
+                console.log(response.error.metadata.order_id);
+                console.log(response.error.metadata.payment_id);
+
+                response.razorpay_order_id = options.orderId;
+
+                fetch("http://localhost:8080/api/user/razorpPay/response", {
+                  method: "PUT",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(response),
+                })
+                  .then((result) => {
+                    result.json().then((res) => {
+                      if (res.success) {
+                        toast.success(res.responseMessage, {
+                          position: "top-center",
+                          autoClose: 1000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        });
+
+                        setTimeout(() => {
+                          window.location.reload(true);
+                        }, 1000);
+                      } else if (!res.success) {
+                        toast.error(res.responseMessage, {
+                          position: "top-center",
+                          autoClose: 1000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        });
+
+                        setTimeout(() => {
+                          window.location.reload(true);
+                        }, 1000); // Redirect after 3 seconds
+                      } else {
+                        toast.error("It seems server is down", {
+                          position: "top-center",
+                          autoClose: 1000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                        });
+
+                        setTimeout(() => {
+                          window.location.reload(true);
+                        }, 1000); // Redirect after 3 seconds
+                      }
+                    });
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    toast.error("It seems server is down", {
+                      position: "top-center",
+                      autoClose: 1000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                    setTimeout(() => {
+                      window.location.reload(true);
+                    }, 1000); // Redirect after 3 seconds
+                  });
+              });
+              rzp1.open();
+            } else {
+              toast.error("Payment Gateway Internal Server Issue", {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+              setTimeout(() => {
+                window.location.reload(true);
+              }, 1000); // Redirect after 3 seconds
+            }
+          } else if (!res.success) {
+            toast.error(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 1000); // Redirect after 3 seconds
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("It seems server is down", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000); // Redirect after 3 seconds
+      });
     e.preventDefault();
-    console.log("CHECKOUT PAGE REQUEST");
-    navigate("/user/order/payment", { state: { priceToPay: totatPrice } });
   };
 
   return (
@@ -166,24 +402,32 @@ const MyCart = () => {
         </div>
         <div className="card-footer custom-bg">
           <div className="float-right">
-            <div
-              className="text-color me-2"
-              style={{
-                textAlign: "right",
-              }}
-            >
-              <h5>Total Price: &#8377; {totatPrice}/-</h5>
-            </div>
+            {(() => {
+              if (myCartData.length > 0) {
+                return (
+                  <div>
+                    <div
+                      className="text-color me-2"
+                      style={{
+                        textAlign: "right",
+                      }}
+                    >
+                      <h5>Total Price: &#8377; {totatPrice}/-</h5>
+                    </div>
 
-            <div className="float-end me-2">
-              <button
-                type="submit"
-                className="btn bg-color custom-bg-text mb-3"
-                onClick={checkout}
-              >
-                Checkout
-              </button>
-            </div>
+                    <div className="float-end me-2">
+                      <button
+                        type="submit"
+                        className="btn bg-color custom-bg-text mb-3"
+                        onClick={checkout}
+                      >
+                        Checkout
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+            })()}
           </div>
         </div>
       </div>
