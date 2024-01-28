@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SearchOrder = () => {
+  let navigate = useNavigate();
   const [allOrderData, setAllOrderData] = useState([]);
   const [orderId, setOrderId] = useState("");
 
@@ -26,7 +29,7 @@ const SearchOrder = () => {
   const getAllOrder = async () => {
     const allOrder = await retrieveAllOrder();
     if (allOrder) {
-      setAllOrderData(allOrder);
+      setAllOrderData(allOrder.orders);
     }
   };
 
@@ -45,7 +48,6 @@ const SearchOrder = () => {
   };
 
   const updateDeliveryStatus = (e) => {
-    console.log("CLICKED DELIVERY STATUS UPDATED");
     fetch("http://localhost:8080/api/user/admin/order/deliveryStatus/update", {
       method: "POST",
       headers: {
@@ -53,21 +55,72 @@ const SearchOrder = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderDeliveryStatus),
-    }).then((result) => {
-      console.log("result", result);
-      result.json().then((res) => {
-        console.log("response", res);
-        setAllOrderData({
-          orderId: "",
-          deliveryStatus: "",
-          deliveryTime: "",
-          deliveryDate: "",
+    })
+      .then((result) => {
+        result.json().then((res) => {
+          if (res.success) {
+            toast.success(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+
+            setAllOrderData({
+              orderId: "",
+              deliveryStatus: "",
+              deliveryTime: "",
+              deliveryDate: "",
+            });
+
+            setAllOrderData(res.orders);
+          } else if (!res.success) {
+            toast.error(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          } else {
+            toast.error("It Seems Server is down!!!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          }
         });
-
-        setAllOrderData(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("It seems server is down", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000); // Redirect after 3 seconds
       });
-    });
-
     e.preventDefault();
   };
 

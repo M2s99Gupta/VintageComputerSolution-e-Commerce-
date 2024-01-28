@@ -9,7 +9,7 @@ const AllOrders = () => {
     const getAllOrder = async () => {
       const allOrder = await retrieveAllOrder();
       if (allOrder) {
-        setAllOrderData(allOrder);
+        setAllOrderData(allOrder.orders);
       }
     };
 

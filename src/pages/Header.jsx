@@ -9,12 +9,12 @@ const Header = () => {
         <div class="container-fluid text-color">
           <img
             src={logo}
-            width="35"
-            height="35"
+            width="55"
+            height="50"
             class="d-inline-block align-top"
             alt=""
           />
-          <Link to="/" class="navbar-brand">
+          <Link to="/" class="navbar-brand ms-2">
             <i>
               <b className="text-color">Online Shopping</b>
             </i>

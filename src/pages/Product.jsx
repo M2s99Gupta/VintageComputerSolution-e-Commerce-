@@ -5,9 +5,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ProductCard from "../productComponent/ProductCard";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Product = () => {
   const { productId, categoryId } = useParams();
+  let navigate = useNavigate();
 
   let user = JSON.parse(sessionStorage.getItem("active-user"));
 
@@ -37,13 +39,13 @@ const Product = () => {
     const getProduct = async () => {
       const retrievedProduct = await retrieveProduct();
 
-      setProduct(retrievedProduct);
+      setProduct(retrievedProduct.products[0]);
     };
 
     const getProductsByCategory = async () => {
       const allProducts = await retrieveProductsByCategory();
       if (allProducts) {
-        setProducts(allProducts);
+        setProducts(allProducts.products);
       }
     };
 
@@ -71,28 +73,72 @@ const Product = () => {
         userId: userId,
         productId: productId,
       }),
-    }).then((result) => {
-      console.log("result", result);
+    })
+      .then((result) => {
+        result.json().then((res) => {
+          if (res.success) {
+            toast.success(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
 
-      toast.success("Products added to Cart Successfully!!!", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+            setTimeout(() => {
+              navigate("/user/mycart");
+            }, 2000); // Redirect after 3 seconds
+          } else if (!res.success) {
+            toast.error(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          } else {
+            toast.error("It Seems Server is down!!!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("It seems server is down", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000); // Redirect after 3 seconds
       });
-
-      result.json().then((res) => {
-        console.log("response", res);
-      });
-    });
   };
 
   const addToCart = (e) => {
     if (user == null) {
-      alert("Please login to buy the products!!!");
+      alert("Please login as Customer to buy the products!!!");
       e.preventDefault();
     } else {
       saveProductToCart(user.id);
@@ -184,11 +230,10 @@ const Product = () => {
         <div className="col-sm-10">
           <h2>Related Products:</h2>
           <div className="row row-cols-1 row-cols-md-4 g-4">
-              
-                {products.map((product) => {
-                  return <ProductCard item={product} />;
-                })}
-              </div>
+            {products.map((product) => {
+              return <ProductCard item={product} />;
+            })}
+          </div>
         </div>
       </div>
     </div>

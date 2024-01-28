@@ -3,22 +3,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-const UserLoginForm = () => {
+const ForgetPassword = () => {
   let navigate = useNavigate();
 
-  const [loginRequest, setLoginRequest] = useState({
+  const [forgetRequest, setForgetRequest] = useState({
     emailId: "",
     password: "",
-    role: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const handleUserInput = (e) => {
-    setLoginRequest({ ...loginRequest, [e.target.name]: e.target.value });
+    setForgetRequest({ ...forgetRequest, [e.target.name]: e.target.value });
   };
 
-  const loginAction = (e) => {
-    if (loginRequest.role === "0" || loginRequest.role === "") {
-      toast.error("Select the Role", {
+  const changePassword = (e) => {
+    if (forgetRequest.confirmPassword !== forgetRequest.newPassword) {
+      toast.error("Password Not Matching", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -28,31 +29,18 @@ const UserLoginForm = () => {
         progress: undefined,
       });
     } else {
-      fetch("http://localhost:8080/api/user/login", {
+      fetch("http://localhost:8080/api/user/forget-password", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginRequest),
+        body: JSON.stringify(forgetRequest),
       })
         .then((result) => {
           console.log("result", result);
           result.json().then((res) => {
             if (res.success) {
-              let userRes = res.users[0];
-
-              if (userRes.role === "Admin") {
-                console.log("Working fine:)");
-                sessionStorage.setItem("active-admin", JSON.stringify(userRes));
-              } else if (userRes.role === "Customer") {
-                sessionStorage.setItem("active-user", JSON.stringify(userRes));
-              } else if (userRes.role === "Delivery") {
-                sessionStorage.setItem(
-                  "active-delivery",
-                  JSON.stringify(userRes)
-                );
-              }
               toast.success(res.responseMessage, {
                 position: "top-center",
                 autoClose: 1000,
@@ -103,27 +91,10 @@ const UserLoginForm = () => {
           style={{ width: "25rem" }}
         >
           <div className="card-header bg-color text-center custom-bg-text">
-            <h4 className="card-title">User Login</h4>
+            <h4 className="card-title">Forget Password</h4>
           </div>
           <div className="card-body">
             <form>
-              <div class="mb-3 text-color">
-                <label for="role" class="form-label">
-                  <b>User Role</b>
-                </label>
-                <select
-                  onChange={handleUserInput}
-                  className="form-control"
-                  name="role"
-                  required
-                >
-                  <option value="0">Select Role</option>
-                  <option value="Admin"> Admin </option>
-                  <option value="Customer"> Customer </option>
-                  <option value="Delivery"> Delivery Person </option>
-                </select>
-              </div>
-
               <div className="mb-3 text-color">
                 <label for="emailId" class="form-label">
                   <b>Email Id</b>
@@ -134,7 +105,7 @@ const UserLoginForm = () => {
                   id="emailId"
                   name="emailId"
                   onChange={handleUserInput}
-                  value={loginRequest.emailId}
+                  value={forgetRequest.emailId}
                   required
                 />
               </div>
@@ -148,16 +119,45 @@ const UserLoginForm = () => {
                   id="password"
                   name="password"
                   onChange={handleUserInput}
-                  value={loginRequest.password}
+                  value={forgetRequest.password}
                   required
                 />
               </div>
+              <div className="mb-3 text-color">
+                <label for="password" className="form-label">
+                  <b>New Password</b>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="newPassword"
+                  name="newPassword"
+                  onChange={handleUserInput}
+                  value={forgetRequest.newPassword}
+                  required
+                />
+              </div>
+              <div className="mb-3 text-color">
+                <label for="password" className="form-label">
+                  <b>Confirm Password</b>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  onChange={handleUserInput}
+                  value={forgetRequest.confirmPassword}
+                  required
+                />
+              </div>
+
               <button
                 type="submit"
                 className="btn bg-color custom-bg-text"
-                onClick={loginAction}
+                onClick={changePassword}
               >
-                Login
+                Change Password
               </button>
               <ToastContainer />
             </form>
@@ -168,4 +168,4 @@ const UserLoginForm = () => {
   );
 };
 
-export default UserLoginForm;
+export default ForgetPassword;

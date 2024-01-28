@@ -14,14 +14,14 @@ const HomePage = () => {
     const getAllProducts = async () => {
       const allProducts = await retrieveAllProducts();
       if (allProducts) {
-        setProducts(allProducts);
+        setProducts(allProducts.products);
       }
     };
 
     const getProductsByCategory = async () => {
       const allProducts = await retrieveProductsByCategory();
       if (allProducts) {
-        setProducts(allProducts);
+        setProducts(allProducts.products);
       }
     };
 
@@ -58,12 +58,10 @@ const HomePage = () => {
           </div>
           <div className="col-md-10">
             <div className="row row-cols-1 row-cols-md-4 g-4">
-              
-                {products.map((product) => {
-                  return <ProductCard item={product} />;
-                })}
-              </div>
-            
+              {products.map((product) => {
+                return <ProductCard item={product} />;
+              })}
+            </div>
           </div>
         </div>
       </div>

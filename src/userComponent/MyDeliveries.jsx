@@ -12,7 +12,7 @@ const MyDeliveries = () => {
       if (myOrder) {
         console.log("my order data is present :)");
 
-        setMyOrderData(myOrder);
+        setMyOrderData(myOrder.orders);
       }
     };
 

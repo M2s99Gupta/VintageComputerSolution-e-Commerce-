@@ -13,12 +13,12 @@ import AddCardDetails from "./pages/AddCardDetails";
 import MyOrder from "./userComponent/MyOrder";
 import AllOrders from "./userComponent/AllOrders";
 import SearchOrder from "./userComponent/SearchOrder";
-import RegisterAdminForm from "./userComponent/RegisterAdminForm";
 import AdminLoginPage from "./userComponent/AdminLoginPage";
 import AddDeliveryPerson from "./userComponent/AddDeliveryPerson";
 import DeliveryPersonLogin from "./userComponent/DeliveryPersonLogin";
 import AssignDeliveryToOrders from "./userComponent/AssignDeliveryToOrders";
 import MyDeliveries from "./userComponent/MyDeliveries";
+import ForgetPassword from "./userComponent/ForgetPassword";
 
 function App() {
   return (
@@ -33,9 +33,7 @@ function App() {
         <Route path="addproduct" element={<AddProductForm />} />
         <Route path="addcategory" element={<AddCategoryForm />} />
         <Route path="/product" element={<Product />} />
-        <Route path="/user/register" element={<AddUserForm />} />
         <Route path="/user/login" element={<UserLoginForm />} />
-        <Route path="/user/admin/register" element={<RegisterAdminForm />} />
         <Route path="/user/admin/login" element={<AdminLoginPage />} />
         <Route
           path="/user/deliveryperson/register"
@@ -63,6 +61,10 @@ function App() {
           element={<AssignDeliveryToOrders />}
         />
         <Route path="/user/delivery/myorders" element={<MyDeliveries />} />
+        <Route path="/user/customer/register" element={<AddUserForm />} />
+        <Route path="/user/admin/register" element={<AddUserForm />} />
+        <Route path="/user/delivery/register" element={<AddUserForm />} />
+        <Route path="/user/forget-password" element={<ForgetPassword />} />
       </Routes>
     </div>
   );

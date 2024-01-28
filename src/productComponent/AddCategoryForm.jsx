@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddCategoryForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  let navigate = useNavigate();
 
-  const saveCategory = () => {
+  const saveCategory = (e) => {
     let data = { title, description };
 
     fetch("http://localhost:8080/api/category/add", {
@@ -14,12 +17,68 @@ const AddCategoryForm = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((result) => {
-      console.warn("result", result);
-      result.json().then((res) => {
-        console.log("response", res);
+    })
+      .then((result) => {
+        result.json().then((res) => {
+          if (res.success) {
+            toast.success(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+
+            setTimeout(() => {
+              navigate("/home");
+            }, 2000); // Redirect after 3 seconds
+          } else if (!res.success) {
+            toast.error(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          } else {
+            toast.error("It Seems Server is down!!!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("It seems server is down", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000); // Redirect after 3 seconds
       });
-    });
+    e.preventDefault();
   };
 
   return (
@@ -72,6 +131,7 @@ const AddCategoryForm = () => {
               >
                 Add Category
               </button>
+              <ToastContainer />
             </form>
           </div>
         </div>

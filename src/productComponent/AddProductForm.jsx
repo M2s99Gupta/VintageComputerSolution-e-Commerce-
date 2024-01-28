@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddProductForm = () => {
   const [categories, setCategories] = useState([]);
+
+  let navigate = useNavigate();
 
   const retrieveAllCategories = async () => {
     const response = await axios.get("http://localhost:8080/api/category/all");
@@ -13,7 +17,7 @@ const AddProductForm = () => {
     const getAllCategories = async () => {
       const allCategories = await retrieveAllCategories();
       if (allCategories) {
-        setCategories(allCategories);
+        setCategories(allCategories.categories);
       }
     };
 
@@ -33,25 +37,90 @@ const AddProductForm = () => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const saveProduct = () => {
-    const formData = new FormData();
-    formData.append("image", selectedPhoto);
-    formData.append("title", product.title);
-    formData.append("description", product.description);
-    formData.append("price", product.price);
-    formData.append("quantity", product.quantity);
-    formData.append("categoryId", product.categoryId);
-
-    axios
-      .post("http://localhost:8080/api/product/add", formData)
-      .then((resp) => {
-        let result = resp.data.data;
-        alert("Product saved successfully");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-        alert("Error saving product");
+  const saveProduct = (e) => {
+    e.preventDefault();
+    if (product.categoryId === "" || product.categoryId === "0") {
+      toast.error("Select Product Category", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
+    } else {
+      const formData = new FormData();
+      formData.append("image", selectedPhoto);
+      formData.append("title", product.title);
+      formData.append("description", product.description);
+      formData.append("price", product.price);
+      formData.append("quantity", product.quantity);
+      formData.append("categoryId", product.categoryId);
+
+      axios
+        .post("http://localhost:8080/api/product/add", formData)
+        .then((resp) => {
+          let response = resp.data;
+
+          if (response.success) {
+            toast.success(response.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+
+            setTimeout(() => {
+              navigate("/home");
+            }, 2000); // Redirect after 3 seconds
+          } else if (!response.success) {
+            toast.error(response.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          } else {
+            toast.error("It Seems Server is down!!!", {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 2000); // Redirect after 3 seconds
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("It seems server is down", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 1000); // Redirect after 3 seconds
+        });
+    }
   };
 
   return (
@@ -59,14 +128,14 @@ const AddProductForm = () => {
       <div class="mt-2 d-flex aligns-items-center justify-content-center">
         <div
           class="card form-card border-color custom-bg"
-          style={{ width: "25rem" }}
+          style={{ width: "50rem" }}
         >
           <div className="card-header bg-color custom-bg-text text-center">
             <h5 class="card-title">Add Product</h5>
           </div>
           <div class="card-body text-color">
-            <form>
-              <div class="mb-3">
+            <form className="row g-3">
+              <div class="col-md-6 mb-3">
                 <label for="title" class="form-label">
                   <b>Product Title</b>
                 </label>
@@ -77,9 +146,10 @@ const AddProductForm = () => {
                   name="title"
                   onChange={handleInput}
                   value={product.title}
+                  required
                 />
               </div>
-              <div class="mb-3">
+              <div class="col-md-6 mb-3">
                 <label for="description" class="form-label">
                   <b>Product Description</b>
                 </label>
@@ -90,10 +160,11 @@ const AddProductForm = () => {
                   rows="3"
                   onChange={handleInput}
                   value={product.description}
+                  required
                 />
               </div>
 
-              <div className="mb-3">
+              <div className="col-md-6 mb-3">
                 <label className="form-label">
                   <b>Category</b>
                 </label>
@@ -102,6 +173,7 @@ const AddProductForm = () => {
                   name="categoryId"
                   onChange={handleInput}
                   className="form-control"
+                  required
                 >
                   <option value="">Select Category</option>
 
@@ -113,7 +185,7 @@ const AddProductForm = () => {
                 </select>
               </div>
 
-              <div class="mb-3 mt-1">
+              <div class="col-md-6 mb-3">
                 <label for="quantity" class="form-label">
                   <b>Product Quantity</b>
                 </label>
@@ -124,10 +196,11 @@ const AddProductForm = () => {
                   name="quantity"
                   onChange={handleInput}
                   value={product.quantity}
+                  required
                 />
               </div>
 
-              <div class="mb-3">
+              <div class="col-md-6 mb-3">
                 <label for="price" class="form-label">
                   <b>Product Price</b>
                 </label>
@@ -138,10 +211,11 @@ const AddProductForm = () => {
                   name="price"
                   onChange={handleInput}
                   value={product.price}
+                  required
                 />
               </div>
 
-              <div class="mb-3">
+              <div class="col-md-6 mb-3">
                 <label for="formFile" class="form-label">
                   <b> Select Product Image</b>
                 </label>
@@ -152,16 +226,19 @@ const AddProductForm = () => {
                   name="photo"
                   value={product.photo}
                   onChange={(e) => setSelectedPhoto(e.target.files[0])}
+                  required
                 />
               </div>
-
-              <button
-                type="submit"
-                class="btn bg-color custom-bg-text"
-                onClick={saveProduct}
-              >
-                Add Product
-              </button>
+              <div className="d-flex aligns-items-center justify-content-center">
+                <button
+                  type="submit"
+                  class="btn bg-color custom-bg-text"
+                  onClick={() => saveProduct()}
+                >
+                  Add Product
+                </button>
+                <ToastContainer />
+              </div>
             </form>
           </div>
         </div>

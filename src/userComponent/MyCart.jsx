@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const MyCart = () => {
@@ -13,9 +14,6 @@ const MyCart = () => {
     const getMyCart = async () => {
       const myCart = await retrieveMyCart();
       if (myCart) {
-        console.log("cart data is present :)");
-        console.log(myCart.totalCartPrice);
-        console.log(myCart.cartData);
         setTotalPrice(myCart.totalCartPrice);
         setMyCartData(myCart.cartData);
       }
@@ -33,11 +31,61 @@ const MyCart = () => {
   };
 
   const deleteProductFromCart = (cartId, e) => {
-    const response = axios.get(
-      "http://localhost:8080/api/user/mycart/remove?cartId=" + cartId
-    );
+    fetch("http://localhost:8080/api/user/mycart/remove?cartId=" + cartId, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        //    Authorization: "Bearer " + restaurant_jwtToken,
+      },
+    })
+      .then((result) => {
+        result.json().then((res) => {
+          if (res.success) {
+            toast.success(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
 
-    console.log(response);
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 1000); // Redirect after 3 seconds
+          } else if (!res.success) {
+            toast.error(res.responseMessage, {
+              position: "top-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 1000); // Redirect after 3 seconds
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("It seems server is down", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000); // Redirect after 3 seconds
+      });
   };
 
   const checkout = (e) => {
@@ -107,6 +155,7 @@ const MyCart = () => {
                         >
                           Delete
                         </button>
+                        <ToastContainer />
                       </td>
                     </tr>
                   );

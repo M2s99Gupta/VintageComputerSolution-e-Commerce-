@@ -14,7 +14,7 @@ const GetAllCategories = () => {
     const getAllCategories = async () => {
       const allCategories = await retrieveAllCategories();
       if (allCategories) {
-        setCategories(allCategories);
+        setCategories(allCategories.categories);
       }
     };
 
