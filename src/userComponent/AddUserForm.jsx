@@ -95,8 +95,8 @@ const AddUserForm = () => {
             });
 
             setTimeout(() => {
-              navigate("/user/login");
-            }, 1000);
+              navigate("/user/verify/register", { state: res.users[0] });
+            }, 3000); // Redirect after 3 seconds
           } else if (!res.success) {
             toast.error(res.responseMessage, {
               position: "top-center",

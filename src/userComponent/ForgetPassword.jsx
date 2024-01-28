@@ -51,8 +51,8 @@ const ForgetPassword = () => {
                 progress: undefined,
               });
               setTimeout(() => {
-                window.location.href = "/home";
-              }, 1000); // Redirect after 3 seconds
+                navigate("/user/verify/forget", { state: res.users[0] });
+              }, 3000); // Redirect after 3 seconds
             } else {
               toast.error(res.responseMessage, {
                 position: "top-center",

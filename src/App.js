@@ -19,6 +19,8 @@ import DeliveryPersonLogin from "./userComponent/DeliveryPersonLogin";
 import AssignDeliveryToOrders from "./userComponent/AssignDeliveryToOrders";
 import MyDeliveries from "./userComponent/MyDeliveries";
 import ForgetPassword from "./userComponent/ForgetPassword";
+import UserOtpVerification from "./userComponent/UserOtpVerification";
+import ForgetPassOtpVerification from "./userComponent/ForgetPassOtpVerification";
 
 function App() {
   return (
@@ -65,6 +67,11 @@ function App() {
         <Route path="/user/admin/register" element={<AddUserForm />} />
         <Route path="/user/delivery/register" element={<AddUserForm />} />
         <Route path="/user/forget-password" element={<ForgetPassword />} />
+        <Route path="/user/verify/register" element={<UserOtpVerification />} />
+        <Route
+          path="/user/verify/forget"
+          element={<ForgetPassOtpVerification />}
+        />
       </Routes>
     </div>
   );
