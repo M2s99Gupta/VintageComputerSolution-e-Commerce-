@@ -233,7 +233,7 @@ const AddProductForm = () => {
                 <button
                   type="submit"
                   class="btn bg-color custom-bg-text"
-                  onClick={() => saveProduct()}
+                  onClick={saveProduct}
                 >
                   Add Product
                 </button>

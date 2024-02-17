@@ -8,7 +8,6 @@ const ForgetPassword = () => {
 
   const [forgetRequest, setForgetRequest] = useState({
     emailId: "",
-    password: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -109,20 +108,7 @@ const ForgetPassword = () => {
                   required
                 />
               </div>
-              <div className="mb-3 text-color">
-                <label for="password" className="form-label">
-                  <b>Password</b>
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  onChange={handleUserInput}
-                  value={forgetRequest.password}
-                  required
-                />
-              </div>
+
               <div className="mb-3 text-color">
                 <label for="password" className="form-label">
                   <b>New Password</b>
