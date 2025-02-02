@@ -30,7 +30,7 @@ const PaymentSuccess = () => {
     setReferenceId(urlParams.get("razorpay_payment_link_reference_id"));
     setPaymentStatus(urlParams.get("razorpay_payment_link_status"));
   }, []);
-
+ 
   useEffect(() => {
     if (paymentId && paymentStatus === "paid") {
       const data = { orderId, paymentId, jwt };
