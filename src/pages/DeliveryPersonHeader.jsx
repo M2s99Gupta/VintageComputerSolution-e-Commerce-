@@ -19,6 +19,7 @@ const DeliveryPersonHeader = () => {
       progress: undefined,
     });
     sessionStorage.removeItem("active-delivery");
+    sessionStorage.removeItem("delivery_jwtToken");
     window.location.reload(true);
   };
 

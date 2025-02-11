@@ -16,6 +16,7 @@ const HeaderUser = () => {
       progress: undefined,
     });
     sessionStorage.removeItem("active-user");
+    sessionStorage.removeItem("user_jwtToken");
     window.location.reload(true);
   };
 

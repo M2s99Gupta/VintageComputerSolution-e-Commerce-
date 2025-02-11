@@ -19,6 +19,7 @@ const AdminHeader = () => {
       progress: undefined,
     });
     sessionStorage.removeItem("active-admin");
+    sessionStorage.removeItem("admin_jwtToken");
     window.location.reload(true);
   };
 

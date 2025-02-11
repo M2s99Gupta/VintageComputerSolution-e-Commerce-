@@ -45,13 +45,16 @@ const UserLoginForm = () => {
               if (userRes.role === "Admin") {
                 console.log("Working fine:)");
                 sessionStorage.setItem("active-admin", JSON.stringify(userRes));
+                sessionStorage.setItem("admin_jwtToken", res.jwtToken);
               } else if (userRes.role === "Customer") {
                 sessionStorage.setItem("active-user", JSON.stringify(userRes));
+                sessionStorage.setItem("user_jwtToken", res.jwtToken);
               } else if (userRes.role === "Delivery") {
                 sessionStorage.setItem(
                   "active-delivery",
                   JSON.stringify(userRes)
                 );
+                sessionStorage.setItem("delivery_jwtToken", res.jwtToken);
               }
               toast.success(res.responseMessage, {
                 position: "top-center",

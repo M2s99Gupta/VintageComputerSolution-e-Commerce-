@@ -16,7 +16,7 @@ const Header = () => {
           />
           <Link to="/" class="navbar-brand ms-2">
             <i>
-              <b className="text-color">Online Shopping</b>
+              <b className="text-color">Vintage Computer Solution</b>
             </i>
           </Link>
 
