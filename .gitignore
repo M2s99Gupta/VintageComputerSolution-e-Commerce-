@@ -21,6 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> aa03f4f (Initialize project using Create React App)
