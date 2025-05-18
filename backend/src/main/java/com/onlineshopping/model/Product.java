@@ -1,6 +1,8 @@
 package com.onlineshopping.model;
 
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,17 @@ public class Product {
     @JoinColumn(name ="categoryId")
     private Category category;
     
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     
 	public int getId() {
 		return id;

@@ -7,5 +7,7 @@ import com.onlineshopping.model.Product;
 public interface ProductService {
 	
 	void addProduct(Product product, MultipartFile productImmage);
+	boolean deleteProductById(int id);
+
 
 }

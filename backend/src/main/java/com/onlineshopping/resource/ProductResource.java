@@ -31,186 +31,186 @@ import com.onlineshopping.utility.StorageService;
 @Component
 public class ProductResource {
 
-	@Autowired
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@Autowired
-	private ProductDao productDao;
+    @Autowired
+    private ProductDao productDao;
 
-	@Autowired
-	private CategoryDao categoryDao;
+    @Autowired
+    private CategoryDao categoryDao;
 
-	@Autowired
-	private StorageService storageService;
+    @Autowired
+    private StorageService storageService;
 
-	public ResponseEntity<CommonApiResponse> addProduct(ProductAddRequest productDto) {
-		CommonApiResponse response = new CommonApiResponse();
+    public ResponseEntity<CommonApiResponse> addProduct(ProductAddRequest productDto) {
+        CommonApiResponse response = new CommonApiResponse();
 
-		if (productDto == null) {
-			response.setResponseMessage("bad request - missing request");
-			response.setSuccess(false);
+        if (productDto == null || !ProductAddRequest.validateProduct(productDto)) {
+            response.setResponseMessage("Bad request - missing or invalid product data");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-			return new ResponseEntity<CommonApiResponse>(response, HttpStatus.BAD_REQUEST);
-		}
+        Optional<Category> optional = categoryDao.findById(productDto.getCategoryId());
+        if (optional.isEmpty()) {
+            response.setResponseMessage("Please select a valid product category");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-		if (!ProductAddRequest.validateProduct(productDto)) {
-			response.setResponseMessage("bad request - missing field");
-			response.setSuccess(false);
+        Product product = ProductAddRequest.toEntity(productDto);
+        product.setCategory(optional.get());
 
-			return new ResponseEntity<CommonApiResponse>(response, HttpStatus.BAD_REQUEST);
+        try {
+            productService.addProduct(product, productDto.getImage());
+            response.setResponseMessage("Product added successfully!");
+            response.setSuccess(true);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		}
+        response.setResponseMessage("Failed to add product");
+        response.setSuccess(false);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-		Product product = ProductAddRequest.toEntity(productDto);
+    public ResponseEntity<ProductResponse> getAllProducts() {
+        ProductResponse response = new ProductResponse();
 
-		if (product == null) {
-			response.setResponseMessage("bad request - missing field");
-			response.setSuccess(false);
+        List<Product> products = productDao.findByDeletedFalse(); // ✅ Only non-deleted products
 
-			return new ResponseEntity<CommonApiResponse>(response, HttpStatus.BAD_REQUEST);
+        if (CollectionUtils.isEmpty(products)) {
+            response.setResponseMessage("No products found");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
 
-		}
+        response.setProducts(products);
+        response.setResponseMessage("Products fetched successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-		Optional<Category> optional = categoryDao.findById(productDto.getCategoryId());
-		Category category = null;
-		if (optional.isPresent()) {
-			category = optional.get();
-		}
+    public ResponseEntity<ProductResponse> getProductById(int productId) {
+        ProductResponse response = new ProductResponse();
 
-		if (category == null) {
-			response.setResponseMessage("please select correct product category");
-			response.setSuccess(false);
+        if (productId == 0) {
+            response.setResponseMessage("Product ID is missing");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-			return new ResponseEntity<CommonApiResponse>(response, HttpStatus.BAD_REQUEST);
+        Optional<Product> optional = productDao.findByIdAndDeletedFalse(productId); // ✅ Only if not deleted
 
-		}
+        if (optional.isEmpty()) {
+            response.setResponseMessage("Product not found");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 
-		product.setCategory(category);
+        response.setProducts(Arrays.asList(optional.get()));
+        response.setResponseMessage("Product fetched successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-		try {
-			productService.addProduct(product, productDto.getImage());
+    public ResponseEntity<?> getProductsByCategories(int categoryId) {
+        ProductResponse response = new ProductResponse();
 
-			response.setResponseMessage("Product Added Successful!!!");
-			response.setSuccess(true);
+        if (categoryId == 0) {
+            response.setResponseMessage("Category ID is missing");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-			return new ResponseEntity<CommonApiResponse>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        Optional<Category> optional = categoryDao.findById(categoryId);
+        if (optional.isEmpty()) {
+            response.setResponseMessage("Category not found");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-		response.setResponseMessage("Failed to add the Product");
-		response.setSuccess(false);
+        List<Product> products = productDao.findByCategoryIdAndDeletedFalse(categoryId); // ✅ Filter deleted
 
-		return new ResponseEntity<CommonApiResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+        if (CollectionUtils.isEmpty(products)) {
+            response.setResponseMessage("No products found for this category");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
 
-	public ResponseEntity<ProductResponse> getAllProducts() {
-		ProductResponse response = new ProductResponse();
+        response.setProducts(products);
+        response.setResponseMessage("Products fetched successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-		List<Product> products = new ArrayList<Product>();
+    public void fetchProductImage(String productImageName, HttpServletResponse resp) {
+        Resource resource = storageService.load(productImageName);
+        if (resource != null) {
+            try (InputStream in = resource.getInputStream()) {
+                ServletOutputStream out = resp.getOutputStream();
+                FileCopyUtils.copy(in, out);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-		products = productDao.findAll();
+    public ResponseEntity<CommonApiResponse> updateProduct(ProductAddRequest productDto) {
+        CommonApiResponse response = new CommonApiResponse();
 
-		if (CollectionUtils.isEmpty(products)) {
-			response.setResponseMessage("Products not found!!!");
-			response.setSuccess(false);
+        if (productDto == null || productDto.getId() == 0) {
+            response.setResponseMessage("Bad request - Product ID is missing");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.OK);
-		}
+        Optional<Product> optionalProduct = productDao.findByIdAndDeletedFalse(productDto.getId()); // ✅ Avoid updating deleted
+        if (optionalProduct.isEmpty()) {
+            response.setResponseMessage("Product not found or has been deleted");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 
-		response.setProducts(products);
-		response.setResponseMessage("Product Fetched Successful!!!");
-		response.setSuccess(true);
+        Product product = optionalProduct.get();
 
-		return new ResponseEntity<ProductResponse>(response, HttpStatus.OK);
-	}
+        if (!ProductAddRequest.validateProduct(productDto)) {
+            response.setResponseMessage("Bad request - Missing required fields");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-	public ResponseEntity<ProductResponse> getProductById(int productId) {
-		ProductResponse response = new ProductResponse();
+        // Update product details
+        product.setTitle(productDto.getTitle());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
 
-		if (productId == 0) {
-			response.setResponseMessage("Product Id is missing");
-			response.setSuccess(false);
+        Optional<Category> optionalCategory = categoryDao.findById(productDto.getCategoryId());
+        if (optionalCategory.isEmpty()) {
+            response.setResponseMessage("Invalid category selected");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        product.setCategory(optionalCategory.get());
 
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.BAD_REQUEST);
-		}
+        if (productDto.getImage() != null && !productDto.getImage().isEmpty()) {
+            try {
+                String imageName = storageService.store(productDto.getImage());
+                product.setImageName(imageName);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.setResponseMessage("Failed to upload image");
+                response.setSuccess(false);
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
 
-		Product product = new Product();
-
-		Optional<Product> optional = productDao.findById(productId);
-
-		if (optional.isPresent()) {
-			product = optional.get();
-		}
-
-		if (product == null) {
-			response.setResponseMessage("Product not found");
-			response.setSuccess(false);
-
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.BAD_REQUEST);
-		}
-
-		response.setProducts(Arrays.asList(product));
-		response.setResponseMessage("Product Fetched Successful!!!");
-		response.setSuccess(true);
-
-		return new ResponseEntity<ProductResponse>(response, HttpStatus.OK);
-	}
-
-	public ResponseEntity<?> getProductsByCategories(int categoryId) {
-		ProductResponse response = new ProductResponse();
-
-		if (categoryId == 0) {
-			response.setResponseMessage("Category Id is missing");
-			response.setSuccess(false);
-
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.BAD_REQUEST);
-		}
-
-		Category category = null;
-
-		Optional<Category> optional = categoryDao.findById(categoryId);
-
-		if (optional.isPresent()) {
-			category = optional.get();
-		}
-
-		if (category == null) {
-			response.setResponseMessage("Category not found!!!");
-			response.setSuccess(false);
-
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.BAD_REQUEST);
-
-		}
-
-		List<Product> products = new ArrayList<Product>();
-
-		products = productDao.findByCategoryId(categoryId);
-
-		if (CollectionUtils.isEmpty(products)) {
-			response.setResponseMessage("Products not found!!!");
-			response.setSuccess(false);
-
-			return new ResponseEntity<ProductResponse>(response, HttpStatus.OK);
-		}
-
-		response.setProducts(products);
-		response.setResponseMessage("Product Fetched Successful!!!");
-		response.setSuccess(true);
-
-		return new ResponseEntity<ProductResponse>(response, HttpStatus.OK);
-	}
-
-	public void fetchProductImage(String productImageName, HttpServletResponse resp) {
-		Resource resource = storageService.load(productImageName);
-		if (resource != null) {
-			try (InputStream in = resource.getInputStream()) {
-				ServletOutputStream out = resp.getOutputStream();
-				FileCopyUtils.copy(in, out);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
+        productDao.save(product);
+        response.setResponseMessage("Product updated successfully");
+        response.setSuccess(true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

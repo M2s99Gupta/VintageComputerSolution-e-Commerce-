@@ -20,6 +20,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     	
     	User user = this.userDao.findByEmailId(emailId);
     	
+    	
+    	
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmailId()).password(user.getPassword()).authorities(user.getRole()).build();
         
     }
