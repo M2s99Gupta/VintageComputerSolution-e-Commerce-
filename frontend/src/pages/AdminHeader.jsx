@@ -31,7 +31,7 @@ const AdminHeader = () => {
           class="nav-link active"
           aria-current="page"
         >
-          <b className="text-color">Register Delivery</b>
+          <b className="text-color">Add Delivery</b>
         </Link>
       </li>
 

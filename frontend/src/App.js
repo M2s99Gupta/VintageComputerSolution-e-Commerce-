@@ -22,6 +22,8 @@ import ForgetPassword from "./userComponent/ForgetPassword";
 import UserOtpVerification from "./userComponent/UserOtpVerification";
 import ForgetPassOtpVerification from "./userComponent/ForgetPassOtpVerification";
 
+import UpdateProductForm from "./productComponent/UpdateProductForm";
+
 function App() {
   return (
     <div>
@@ -33,6 +35,10 @@ function App() {
         <Route path="contact" element={<ContactUs />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="addproduct" element={<AddProductForm />} />
+        
+        <Route path="updateproduct/:productId" element={<UpdateProductForm />} />
+        
+
         <Route path="addcategory" element={<AddCategoryForm />} />
         <Route path="/product" element={<Product />} />
         <Route path="/user/login" element={<UserLoginForm />} />

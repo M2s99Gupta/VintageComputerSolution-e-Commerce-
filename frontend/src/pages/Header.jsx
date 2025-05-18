@@ -38,16 +38,15 @@ const Header = () => {
                   <b className="text-color">About Us</b>
                 </Link>
               </li>
-
               <li class="nav-item">
                 <Link to="/contact" class="nav-link active" aria-current="page">
                   <b className="text-color">Contact Us</b>
                 </Link>
               </li>
             </ul>
-
             <RoleNav />
           </div>
+
         </div>
       </nav>
     </div>

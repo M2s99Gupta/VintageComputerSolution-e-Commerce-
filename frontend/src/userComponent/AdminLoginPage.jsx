@@ -16,6 +16,8 @@ const AdminLoginPage = () => {
   };
 
   const loginAction = (e) => {
+    e.preventDefault(); // <-- Move this to the top
+  
     fetch("http://localhost:8080/api/user/admin/login", {
       method: "POST",
       headers: {
@@ -24,23 +26,25 @@ const AdminLoginPage = () => {
       },
       body: JSON.stringify(loginRequest),
     }).then((result) => {
-      console.log("result", result);
       result.json().then((res) => {
-        sessionStorage.setItem("active-admin", JSON.stringify(res));
-        toast.success("logged in successfully!!!", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        if (res && res.success) { // assuming response has success property
+          sessionStorage.setItem("active-admin", JSON.stringify(res));
+          toast.success("Logged in successfully!!!", {
+            position: "top-center",
+            autoClose: 1000,
+          });
+          // Navigate to admin dashboard or refresh page to update UI
+          // navigate("/admin/dashboard"); // add this if you use react-router's useNavigate()
+        } else {
+          toast.error("Login failed. Please check your credentials.", {
+            position: "top-center",
+            autoClose: 1000,
+          });
+        }
       });
     });
-
-    e.preventDefault();
   };
+  
 
   return (
     <div>
